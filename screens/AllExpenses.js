@@ -1,11 +1,10 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import ExpensesOutPut from "../components/ExpensesOutPut/ExpensesOutput";
 
 function AllExpenses(){
     return (
         <View>
-            <Text>
-                All Expenses
-            </Text>
+            <ExpensesOutPut periodName={'All Expense'} />
         </View>
     )
 }
