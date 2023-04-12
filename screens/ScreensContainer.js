@@ -14,20 +14,20 @@ const BottomTab = createBottomTabNavigator();
 function ExpensesOverview() {
     return (
         <BottomTab.Navigator
-            screenOptions={({navigation}) => ({
-                headerStyle:{backgroundColor:GlobalStyles.colors.primary500},
-                headerTintColor:'white',
-                tabBarStyle:{backgroundColor:GlobalStyles.colors.primary500},
-                tabBarActiveTintColor:GlobalStyles.colors.accent500,
-                headerRight:({tintColor}) => <IconButton name='add' color={tintColor} size={26} onPress={() => navigation.navigate('ManageExpenses')}/>
+            screenOptions={({ navigation }) => ({
+                headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+                headerTintColor: 'white',
+                tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+                tabBarActiveTintColor: GlobalStyles.colors.accent500,
+                headerRight: ({ tintColor }) => <IconButton name='add' color={tintColor} size={26} onPress={() => navigation.navigate('ManageExpenses')} />
             })}
         >
             <BottomTab.Screen
                 name={'RecentExpenses'}
                 component={RecentExpenses}
                 options={{
-                    title:'Recent Expenses',
-                    tabBarLabel:'Recent',
+                    title: 'Recent Expenses',
+                    tabBarLabel: 'Recent',
                     tabBarIcon: ({ color, size }) => <Ionicons name='hourglass' color={color} size={size} />
                 }}
             />
@@ -35,9 +35,9 @@ function ExpensesOverview() {
                 name={'AllExpenses'}
                 component={AllExpenses}
                 options={{
-                    title:'All Expenses',
-                    tabBarLabel:'All Expenses',
-                    tabBarIcon: ({color, size}) => <Ionicons name='calendar' color={color} size={size}/>
+                    title: 'All Expenses',
+                    tabBarLabel: 'All Expenses',
+                    tabBarIcon: ({ color, size }) => <Ionicons name='calendar' color={color} size={size} />
                 }}
             />
         </BottomTab.Navigator>
@@ -55,7 +55,16 @@ function ScreensContainer() {
                         headerShown: false
                     }}
                 />
-                <Stack.Screen name='ManageExpenses' component={ManageExpenses} />
+                <Stack.Screen
+                    name='ManageExpenses'
+                    component={ManageExpenses}
+                    options={{
+                        headerStyle: {
+                            backgroundColor: GlobalStyles.colors.primary500
+                        },
+                        headerTintColor:'white'
+                    }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     )
