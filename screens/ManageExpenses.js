@@ -2,11 +2,14 @@ import { StyleSheet, Text, View } from "react-native";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../styles/styles";
 import Button from "../components/UI/Button";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
+import { ExpensesContext } from "../store/expense-context";
 
 function ManageExpenses({route, navigation}){
     const expenseId = route.params?.expenseId;
     const isEdit = !!expenseId;
+
+    const expensesCtx = useContext(ExpensesContext);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -14,16 +17,29 @@ function ManageExpenses({route, navigation}){
         })
     }, [navigation, isEdit])
 
+    const cancelHandler = () => {
+        navigation.goBack();
+    }
+
+    const addAndUpdateHandler = () => {
+        navigation.goBack();
+    }
+
+    const deleteHandler = () => {
+        navigation.goBack();
+        expensesCtx.deleteExpense(expenseId);
+    }
+
     return (
         <View style={styles.rootContainer}>
             <View style={styles.buttons}>
-                <Button style={styles.button} mode={'flat'}>Cancel</Button>
-                <Button style={styles.button}>{isEdit ? 'Update' : 'Add'}</Button>
+                <Button style={styles.button} mode={'flat'} onPress={cancelHandler}>Cancel</Button>
+                <Button style={styles.button} onPress={addAndUpdateHandler}>{isEdit ? 'Update' : 'Add'}</Button>
             </View>
             {
                 isEdit && 
                 <View style={styles.iconContainer}>
-                    <IconButton name='trash' color={GlobalStyles.colors.error500} size={36}/>
+                    <IconButton name='trash' color={GlobalStyles.colors.error500} size={36} onPress={deleteHandler}/>
                 </View>
             }
         </View>

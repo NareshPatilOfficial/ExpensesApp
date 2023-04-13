@@ -73,14 +73,14 @@ const DUMMY_EXPENSES = [
 ];
 
 function ExpensesOutPut({expenses,periodName}){
-    const totalExpenseAmount = DUMMY_EXPENSES.reduce((sum, expense) => {
+    const totalExpenseAmount = expenses.reduce((sum, expense) => {
         return sum + expense.amount;
     }, 0)
 
     return (
         <View style={styles.container}>
             <ExpensesSummary periodName={periodName} totalExpense={totalExpenseAmount} />
-            <ExpensesList expenses={DUMMY_EXPENSES}/>
+            <ExpensesList expenses={expenses}/>
         </View>
     )
 }

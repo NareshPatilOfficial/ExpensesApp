@@ -1,10 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import ScreensContainer from './screens/ScreensContainer';
+import ExpensesContextProvider from './store/expense-context';
 
 export default function App() {
   return (
-    <ScreensContainer />
+    <ExpensesContextProvider>
+      <StatusBar style='light'/>
+      <ScreensContainer />
+    </ExpensesContextProvider>
   );
 }
 
