@@ -7,9 +7,12 @@ function Input({ style, label, textInputConfig }) {
     if(textInputConfig.multiline){
         inputStyle.push(styles.multilineStyle)
     }
+    if(textInputConfig.invalid){
+        inputStyle.push(styles.invalidInput)
+    }
     return (
         <View style={[styles.inputContainer, style]}>
-            <Text style={styles.label}>{label}</Text>
+            <Text style={[styles.label, textInputConfig.invalid && styles.invalidLabel]}>{label}</Text>
             <TextInput
                 value={textInputConfig.value}
                 onChangeText={textInputConfig.onChangeText}
@@ -29,6 +32,9 @@ const styles = StyleSheet.create({
     label: {
         color: GlobalStyles.colors.primary100
     },
+    invalidLabel:{
+        color: GlobalStyles.colors.error500,
+    },
     input: {
         backgroundColor: GlobalStyles.colors.primary100,
         color:GlobalStyles.colors.primary800,
@@ -36,6 +42,11 @@ const styles = StyleSheet.create({
         paddingHorizontal:6,
         fontSize:18,
         borderRadius:4
+    },
+    invalidInput:{
+        backgroundColor: GlobalStyles.colors.error50,
+        borderColor:  GlobalStyles.colors.error500,
+        borderWidth:1
     },
     multilineStyle:{
         height:100,

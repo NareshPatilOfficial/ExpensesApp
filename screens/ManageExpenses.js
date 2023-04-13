@@ -39,24 +39,12 @@ function ManageExpenses({ route, navigation }) {
         expensesCtx.deleteExpense(expenseId);
     }
     
-    let intialFormValue = {
-        amount: '',
-        description: '',
-        date: ''
-    };
-    if(isEdit){
-        const expenseData = expensesCtx.expenses.filter((expense) => expense.id === expenseId);
-        intialFormValue = {
-            amount: expenseData[0].amount.toString(),
-            description: expenseData[0].description,
-            date: formattedDate(expenseData[0].date)
-        }
-    };
+    const defaultValue = expensesCtx.expenses.find(expense => expense.id === expenseId);
 
     return (
         <View style={styles.rootContainer}>
             <ExpenseForm
-                intialFormValue={intialFormValue}
+                defaultValue={defaultValue}
                 submitBtnLabel={isEdit ? 'Update' : 'Add'}
                 onCancel={cancelHandler}
                 onSubmit={addAndUpdateHandler}
