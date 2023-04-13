@@ -12,7 +12,7 @@ function RecentExpenses(){
     });
     
     return (
-            <ExpensesOutPut expenses={last7DaysExpenses} periodName={'Last 7 Days Expense'} />
+            <ExpensesOutPut expenses={last7DaysExpenses} periodName={'Last 7 Days Expense'} noExpensesText={'No expenses registered for the last 7 days.'}/>
     )
 }
 

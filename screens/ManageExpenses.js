@@ -5,7 +5,7 @@ import Button from "../components/UI/Button";
 import { useContext, useLayoutEffect } from "react";
 import { ExpensesContext } from "../store/expense-context";
 
-function ManageExpenses({route, navigation}){
+function ManageExpenses({ route, navigation }) {
     const expenseId = route.params?.expenseId;
     const isEdit = !!expenseId;
 
@@ -22,6 +22,22 @@ function ManageExpenses({route, navigation}){
     }
 
     const addAndUpdateHandler = () => {
+        if (isEdit) {
+            expensesCtx.updateExpense(
+                id = expenseId,
+                data = {
+                    description: 'Update',
+                    date: new Date(),
+                    amount: 30.23
+                }
+            )
+        } else {
+            expensesCtx.addExpense({
+                description: 'Add',
+                date: new Date(),
+                amount: 10.10
+            })
+        }
         navigation.goBack();
     }
 
@@ -37,9 +53,9 @@ function ManageExpenses({route, navigation}){
                 <Button style={styles.button} onPress={addAndUpdateHandler}>{isEdit ? 'Update' : 'Add'}</Button>
             </View>
             {
-                isEdit && 
+                isEdit &&
                 <View style={styles.iconContainer}>
-                    <IconButton name='trash' color={GlobalStyles.colors.error500} size={36} onPress={deleteHandler}/>
+                    <IconButton name='trash' color={GlobalStyles.colors.error500} size={36} onPress={deleteHandler} />
                 </View>
             }
         </View>
@@ -49,24 +65,24 @@ function ManageExpenses({route, navigation}){
 export default ManageExpenses;
 
 const styles = StyleSheet.create({
-    rootContainer:{
-        flex:1,
-        backgroundColor:GlobalStyles.colors.primary700,
-        paddingHorizontal:14
+    rootContainer: {
+        flex: 1,
+        backgroundColor: GlobalStyles.colors.primary700,
+        paddingHorizontal: 14
     },
-    iconContainer:{
-        borderTopColor:GlobalStyles.colors.primary100,
-        borderTopWidth:2,
-        marginVertical:12,
-        paddingTop:12,
-        alignItems:'center'
+    iconContainer: {
+        borderTopColor: GlobalStyles.colors.primary100,
+        borderTopWidth: 2,
+        marginVertical: 12,
+        paddingTop: 12,
+        alignItems: 'center'
     },
-    buttons:{
-        flexDirection:'row',
-        marginVertical:8
+    buttons: {
+        flexDirection: 'row',
+        marginVertical: 8
     },
-    button:{
-        flex:1,
-        marginHorizontal:4
+    button: {
+        flex: 1,
+        marginHorizontal: 4
     }
 })
