@@ -70,19 +70,19 @@ const DUMMY_EXPENSES = [
 ];
 
 export const ExpensesContext = createContext({
-    // expenses: [],
-    // addExpense: () => { },
-    // updateExpense: () => { },
-    // deleteExpense: () => { }
+    expenses: [],
+    addExpense: () => { },
+    updateExpense: () => { },
+    deleteExpense: () => { }
 });
 
 function expensesReducer(state, action) {
     switch (action.type) {
         case 'ADD': {
-            return [...state, { id: `${new Date() + Math.random()}`, ...action.payload }];
+            return [action.payload, ...state];
         }
         case 'SET_EXPENSES': {
-            return action.payload;
+            return action.payload.reverse();
         }
         case 'UPDATE': {
             const updatableExpenseIndex = state.findIndex((expense) => expense.id === action.payload.id);

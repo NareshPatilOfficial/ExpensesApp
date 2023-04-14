@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../styles/styles";
-import { useContext, useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { ExpensesContext } from "../store/expense-context";
 import ExpenseForm from "../components/ManageExpenses/ExpenseForm";
-import { addExpenseService } from "../services/expensesService";
+import { addExpenseService, deleteExpenseService, updateExpenseService } from "../services/expensesService";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 
 function ManageExpenses({ route, navigation }) {
+    const [submitting, setSubmitting] = useState(false);
     const expenseId = route.params?.expenseId;
     const isEdit = !!expenseId;
 
@@ -22,24 +24,34 @@ function ManageExpenses({ route, navigation }) {
         navigation.goBack();
     }
 
-    const addAndUpdateHandler = (expenseData) => {
+    const addAndUpdateHandler = async (expenseData) => {
         if (isEdit) {
+            setSubmitting(true);
             expensesCtx.updateExpense(
                 id = expenseId,
                 data = expenseData
             )
+            await updateExpenseService(expenseId, expenseData);
         } else {
-            addExpenseService(expenseData);
-            expensesCtx.addExpense(expenseData)
+            setSubmitting(true);
+            const expenseID = await addExpenseService(expenseData);
+            // setSubmitting(false); // not need, anyway we closing this screen
+            expensesCtx.addExpense({ ...expenseData, id: expenseID })
         }
         navigation.goBack();
     }
 
-    const deleteHandler = () => {
-        navigation.goBack();
+    const deleteHandler = async () => {
+        setSubmitting(true);
+        await deleteExpenseService(expenseId);
         expensesCtx.deleteExpense(expenseId);
+        navigation.goBack();
     }
-    
+
+    if (submitting) {
+        return <LoadingOverlay />
+    }
+
     const defaultValue = expensesCtx.expenses.find(expense => expense.id === expenseId);
 
     return (

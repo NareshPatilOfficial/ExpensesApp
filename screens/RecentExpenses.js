@@ -10,7 +10,7 @@ function RecentExpenses(){
     const [fetching, setFetching] = useState(false);
     const expensesCtx = useContext(ExpensesContext);
     const old7DayDate = getDateMinusDays(new Date(), 7);
-
+    
     useEffect(() => {
         const getExpenses = async () => {
             setFetching(true);
