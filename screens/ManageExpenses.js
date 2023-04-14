@@ -4,7 +4,7 @@ import { GlobalStyles } from "../styles/styles";
 import { useContext, useLayoutEffect } from "react";
 import { ExpensesContext } from "../store/expense-context";
 import ExpenseForm from "../components/ManageExpenses/ExpenseForm";
-import { formattedDate } from "../utils/date";
+import { addExpenseService } from "../services/expensesService";
 
 function ManageExpenses({ route, navigation }) {
     const expenseId = route.params?.expenseId;
@@ -29,6 +29,7 @@ function ManageExpenses({ route, navigation }) {
                 data = expenseData
             )
         } else {
+            addExpenseService(expenseData);
             expensesCtx.addExpense(expenseData)
         }
         navigation.goBack();

@@ -81,6 +81,9 @@ function expensesReducer(state, action) {
         case 'ADD': {
             return [...state, { id: `${new Date() + Math.random()}`, ...action.payload }];
         }
+        case 'SET_EXPENSES': {
+            return action.payload;
+        }
         case 'UPDATE': {
             const updatableExpenseIndex = state.findIndex((expense) => expense.id === action.payload.id);
             const updatedExpense = { ...state[updatableExpenseIndex], ...action.payload.data };
@@ -98,10 +101,14 @@ function expensesReducer(state, action) {
 }
 
 function ExpensesContextProvider({ children }) {
-    const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
+    const [expensesState, dispatch] = useReducer(expensesReducer, []);
 
     const addExpense = (expenseData) => {
         dispatch({ type: 'ADD', payload: expenseData });
+    }
+
+    const setExpenses = (expenses) => {
+        dispatch({ type: 'SET_EXPENSES', payload: expenses });
     }
 
     const updateExpense = (id, expenseData) => {
@@ -115,6 +122,7 @@ function ExpensesContextProvider({ children }) {
     const value = {
         expenses: expensesState,
         addExpense: addExpense,
+        setExpenses: setExpenses,
         updateExpense: updateExpense,
         deleteExpense: deleteExpense
     }
