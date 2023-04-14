@@ -6,8 +6,10 @@ import { ExpensesContext } from "../store/expense-context";
 import ExpenseForm from "../components/ManageExpenses/ExpenseForm";
 import { addExpenseService, deleteExpenseService, updateExpenseService } from "../services/expensesService";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 
 function ManageExpenses({ route, navigation }) {
+    const [error, setError] = useState();
     const [submitting, setSubmitting] = useState(false);
     const expenseId = route.params?.expenseId;
     const isEdit = !!expenseId;
@@ -27,25 +29,52 @@ function ManageExpenses({ route, navigation }) {
     const addAndUpdateHandler = async (expenseData) => {
         if (isEdit) {
             setSubmitting(true);
-            expensesCtx.updateExpense(
-                id = expenseId,
-                data = expenseData
-            )
-            await updateExpenseService(expenseId, expenseData);
+            try {
+                await updateExpenseService(expenseId, expenseData);
+                expensesCtx.updateExpense(
+                    id = expenseId,
+                    data = expenseData
+                );
+                
+                // setSubmitting(false); // not need, anyway we closing this screen
+                navigation.goBack();
+            } catch (error) {
+                setError('Unable to update expense');
+            }
+            
         } else {
             setSubmitting(true);
-            const expenseID = await addExpenseService(expenseData);
-            // setSubmitting(false); // not need, anyway we closing this screen
-            expensesCtx.addExpense({ ...expenseData, id: expenseID })
+            try {
+                const expenseID = await addExpenseService(expenseData);
+                expensesCtx.addExpense({ ...expenseData, id: expenseID });
+                
+                // setSubmitting(false); // not need, anyway we closing this screen
+                navigation.goBack();
+            } catch (error) {
+                setError('Unable to update expense');
+            }
         }
-        navigation.goBack();
+        setSubmitting(false);
     }
 
     const deleteHandler = async () => {
         setSubmitting(true);
-        await deleteExpenseService(expenseId);
-        expensesCtx.deleteExpense(expenseId);
-        navigation.goBack();
+        try {
+            await deleteExpenseService(expenseId);
+            expensesCtx.deleteExpense(expenseId);
+            navigation.goBack();
+        } catch (error) {
+            setError('Unable to delete expense');
+            setSubmitting(false);
+        }
+    }
+
+    const errorHandler = () => {
+        setError(null);
+    }
+
+    if(error && !submitting){
+        return <ErrorOverlay message={error} onErrorHandler={errorHandler}/>
     }
 
     if (submitting) {
